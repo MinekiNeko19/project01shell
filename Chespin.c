@@ -3,6 +3,7 @@
 #include<string.h>
 #include<stdlib.h>
 #include<errno.h>
+#include<signal.h>
 
 /***
 parse commands based on " "
@@ -37,21 +38,32 @@ char ** parse_args( char * line ){
 
 reads and executes commands
   return: errno if there is an error, otherwise 0.
-  
+
 ***/
 int run(){
 
 // gets the command from stdin
+
  char line [100];
+
  fgets(line, 100, stdin);
 
 //parse arguments
  char ** args = parse_args( line );
 
+ if(strcmp(args[0], "exit")==0){
+   exit(0);
+ }
+
 //initiate child process
+int child1 = fork();
 
-
+if (child1 == 0){
+printf("pid child: %d\n", getpid());
 //execute commands
  execvp(args[0], args);
+ kill (getpid(),SIGKILL);
+
+}
  return 0;
 }
