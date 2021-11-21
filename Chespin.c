@@ -45,6 +45,7 @@ int run(){
 // gets the command from stdin
 
  char line [100];
+ int w,status;
 
  fgets(line, 100, stdin);
 
@@ -58,12 +59,15 @@ int run(){
 //initiate child process
 int child1 = fork();
 
-if (child1 == 0){
-printf("pid child: %d\n", getpid());
-//execute commands
- execvp(args[0], args);
- kill (getpid(),SIGKILL);
-
+if (child1) {
+  w = wait(&status);
+  // printf("child %d finished; parent %d resumes\n",child1,getpid());
+}
+else if (!child1){
+  // printf("pid child: %d\tparent: %d\n", getpid(),getppid());
+  //execute commands
+  execvp(args[0], args);
+  exit(0);
 }
  return 0;
 }
