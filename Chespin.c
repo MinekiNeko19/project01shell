@@ -44,17 +44,18 @@ int run(){
 
 // gets the command from stdin
 
- char line [100];
- int w,status;
+char line [100];
+int w,status;
 
- fgets(line, 100, stdin);
+printf("Enter instructions: ");
+fgets(line, 100, stdin);
 
 //parse arguments
- char ** args = parse_args( line );
+char ** args = parse_args( line );
 
- if(strcmp(args[0], "exit")==0){
-   exit(0);
- }
+if(strcmp(args[0], "exit")==0){
+  exit(0);
+}
 
 //initiate child process
 int child1 = fork();
