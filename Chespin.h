@@ -1,5 +1,14 @@
 #ifndef CHESPIN_H
 #define CHESPIN_H
+
+#include<stdio.h>
+#include<unistd.h>
+#include<string.h>
+#include<stdlib.h>
+#include<errno.h>
+#include<signal.h>
+#include<sys/wait.h>
+
 /***
 parse commands based on " "
 
