@@ -1,4 +1,4 @@
-#include "Chestpin.h"
+#include "Chespin.h"
 // WHY DOES ENTERING YES AS AN ARGUMENT BREAK THE SHELL WHAT??
 
 /***
@@ -41,9 +41,12 @@ int run(){
 // gets the command from stdin
 
 char line [100];
+char current_dir[100];
+getcwd(&current_dir,100);
+
 int w,status;
 
-printf("Enter instructions: ");
+printf("%s:$ ", current_dir); // (๑•̀ㅂ•́)و✧
 fgets(line, 100, stdin);
 
 //parse arguments
