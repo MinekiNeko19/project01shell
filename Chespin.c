@@ -1,5 +1,9 @@
-#include "Chespin.h"
-// WHY DOES ENTERING YES AS AN ARGUMENT BREAK THE SHELL WHAT??
+#include<stdio.h>
+#include<unistd.h>
+#include<string.h>
+#include<stdlib.h>
+#include<errno.h>
+#include<signal.h>
 
 /***
 parse commands based on " "
@@ -16,19 +20,31 @@ char ** parse_args( char * line ){
   line = strsep(&line, "\n");
 
   // seperate command by " ", read each into args array
-  char* token;
+  char* token=calloc(1, 100);
   int i = 0;
   while(token = strsep(&line," ")){
+
   args[i] = token;
    i++;
   }
-
+//args[i] = strsep(&line," ");
   // make sure last element is null.
   args[i]= NULL;
 
   return args;
 }
 
+/***
+
+change current working directory
+  return: errno if there's an error.
+
+***/
+int cd(char ** args){
+  chdir(args[1]);
+//maybe add home replacement
+  return errno;
+}
 
 /***
 
@@ -40,34 +56,31 @@ int run(){
 
 // gets the command from stdin
 
-char line [100];
-char current_dir[100];
-getcwd(&current_dir,100);
+ char line [100];
 
-int w,status;
 
-printf("%s:$ ", current_dir); // (๑•̀ㅂ•́)و✧
-fgets(line, 100, stdin);
+ fgets(line, 100, stdin);
 
 //parse arguments
-char ** args = parse_args( line );
+ char ** args =parse_args( line );
 
-if(strcmp(args[0], "exit")==0){
-  exit(0);
-}
+printf("args[1]: %s\n", args[1]);
+ if(strcmp(args[0], "exit")==0){
+   exit(0);
+ }
 
+else if(strcmp(args[0], "cd") == 0){
+  //cd(args);
+  chdir(args[1]);
+}else{
 //initiate child process
 int child1 = fork();
 
-if (child1) {
-  w = wait(&status);
-  // printf("child %d finished; parent %d resumes\n",child1,getpid());
+if (child1 == 0){
+//execute commands
+ execvp(args[0], args);
+
 }
-else if (!child1){
-  // printf("pid child: %d\tparent: %d\n", getpid(),getppid());
-  //execute commands
-  execvp(args[0], args);
-  exit(0);
 }
  return 0;
 }
