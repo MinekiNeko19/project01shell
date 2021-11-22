@@ -29,7 +29,24 @@ char ** parse_args( char * line ){
   return args;
 }
 
+/***
+  Changes the current working directory
+    param: command ["cd", "path"]
+    returns: errno
+***/
 
+// it prints an error whenever I use it but it actually changes the directory so it's weird
+int cd(char ** args){
+
+  if(args[1][0] == '~'){
+    char * path = getenv("HOME");
+    strcat(path, ++args[1]);
+    printf("path: %s\n", path);
+    chdir(path);
+  }else{
+    chdir(args[1]);
+  }
+}
 /***
 
 reads and executes commands
@@ -57,8 +74,10 @@ if(strcmp(args[0], "exit")==0){
 }
 
 else if(strcmp(args[0],"cd")==0){
-  
-  chdir(args[1]);
+  int a = cd(args);
+
+
+  //chdir(args[1]);
 }
 //initiate child process
 int child1 = fork();
