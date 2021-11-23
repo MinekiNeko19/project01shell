@@ -8,6 +8,7 @@
 #include<errno.h>
 #include<signal.h>
 #include<sys/wait.h>
+#include<fcntl.h>
 
 /***
 parse commands based on " "
@@ -25,4 +26,8 @@ reads and executes commands
 
 ***/
 int run();
+
+int cd(char ** args);
+
+int * redirect(char ** args);
 #endif
