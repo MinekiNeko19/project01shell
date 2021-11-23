@@ -59,6 +59,16 @@ int cd(char ** args){
 }
 
 
+char ** redirect_helper(int fd, int std, int * out, char ** temp){
+
+  dup2(fd,std);
+  *temp = NULL;
+  temp[1] = NULL;
+  temp+=2;
+  out[0] = std;
+
+  return temp;
+}
 
 /***
 
@@ -77,33 +87,21 @@ int * redirect(char ** args){
       //printf("stdout\n");
       int stdout = dup(1);
       int fd = open(temp[1], O_CREAT|O_TRUNC|O_WRONLY, 0644);
-      dup2(fd,1);
-      *temp = NULL;
-      temp[1] = NULL;
-      temp+=2;
-      out[0] = 1;
+      temp = redirect_helper(fd,1,out,temp);
       out[1] = stdout;
       return out;
     }else if (strcmp(*temp,">>")==0){
       //printf("append\n");
       int stdout = dup(1);
       int fd = open(temp[1], O_CREAT|O_APPEND|O_WRONLY, 0644);
-      dup2(fd,1);
-      *temp = NULL;
-      temp[1] = NULL;
-      temp+=2;
-      out[0] = 1;
+      temp = redirect_helper(fd,1,out,temp);
       out [1] = stdout;
       return out;
     }else if (strcmp(*temp, "<")==0){
       //printf("stdin\n");
       int stdin = dup(0);
       int fd = open(temp[1],O_RDONLY);
-      dup2(fd,0);
-      *temp = NULL;
-      temp[1] = NULL;
-      temp+=2;
-      out[0] = 0;
+      temp = redirect_helper(fd,0,out,temp);
       out[1] = stdin;
       return out;
     }
