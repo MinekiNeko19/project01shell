@@ -134,7 +134,7 @@ fgets(line, 100, stdin);
 
 //parse arguments
 char ** args = parse_args( line );
-char ** comms = sizeof(args);
+char ** comms = malloc(sizeof(args));
 int args_ind = 0;
 int comms_ind = 0;
 
@@ -164,9 +164,8 @@ while (args[args_ind]) {
       //execute commands
       printf("%s\n",comms[0]);
       execvp(comms[0], comms);
-      // exit(0);
+      exit(0);
     }
-    comms = args;
     comms_ind = 0;
     args_ind++;
   }
