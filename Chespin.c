@@ -129,7 +129,7 @@ getcwd(&current_dir,100);
 
 int w,status;
 
-printf("%s:$ ", current_dir); // (๑•̀ㅂ•́)و✧
+printf("%s:✧ ", current_dir); // (๑•̀ㅂ•́)و✧
 fgets(line, 100, stdin);
 
 //parse arguments
@@ -140,17 +140,23 @@ int comms_ind = 0;
 
 while (args[args_ind]) {
   // printf("%s", comms[comms_ind]);
+  
+
   if (strcmp(args[args_ind],";")) {
     comms[comms_ind] = args[args_ind];
-    printf("copying %s into comms\n",args[args_ind]);
+    // printf("copying %s into comms\n",args[args_ind]);
   }
   args_ind++;
   comms_ind++;
 
-  if (!comms[comms_ind]) {
-    if(strcmp(comms[0], "exit")==0){
-      exit(0);
-    }
+  int * red = redirect(args);
+
+  if(strcmp(comms[0], "exit")==0){
+    exit(0);
+  }
+
+  else if(strcmp(comms[0],"cd")==0){
+    int a = cd(args);
 
     //initiate child process
     int child1 = fork();
@@ -162,7 +168,7 @@ while (args[args_ind]) {
     else if (!child1){
       // printf("pid child: %d\tparent: %d\n", getpid(),getppid());
       //execute commands
-      printf("%s\n",comms[0]);
+      // printf("%s\n",comms[0]);
       execvp(comms[0], comms);
       exit(0);
     }
