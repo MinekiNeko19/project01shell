@@ -150,13 +150,43 @@ else {
   int comms_ind = 0;
   
   while(args[args_ind]) {
-    printf("comms[%d] exists\n", comms_ind);
-    comms[comms_ind]=args[args_ind];
-    printf("stores %s\n",comms[comms_ind]);
-    comms_ind++;
-    args_ind++;
+  //     printf("args[%d]: %s\n",args_ind, args[args_ind]);
+  //     printf("comms[%d]: %s\n",args_ind, comms[comms_ind]);
+
+    // copy current command into comms
+    if (strcmp(args[args_ind],";")) {
+      comms[comms_ind]=args[args_ind];
+      // printf("comms[%d] stores %s\n", comms_ind,comms[comms_ind]);
+      comms_ind++;
+      args_ind++;
+    }    
+    // execute comms
+    else {
+      // printf("%s\n",args[args_ind]);
+
+      // skips copying ;
+      args_ind++;
+      comms[comms_ind]=NULL;
+
+      //initiate child process
+      int child1 = fork();
+
+      if (child1) {
+        w = wait(&status);
+        // printf("child %d finished; parent %d resumes\n",child1,getpid());
+      }
+      else {
+        //execute commands
+        execvp(comms[0], comms);
+        exit(0);
+      }
+
+      // resets comms
+      comms_ind = 0;
+    }
   }
 
+  // run the final commmand b/c its ignored in the first while loop
   //initiate child process
   int child1 = fork();
 
@@ -164,13 +194,12 @@ else {
     w = wait(&status);
     // printf("child %d finished; parent %d resumes\n",child1,getpid());
   }
-  else if (!child1){
-    // printf("pid child: %d\tparent: %d\n", getpid(),getppid());
+  else {
     //execute commands
-    // printf("%s\n",comms[0]);
     execvp(comms[0], comms);
     exit(0);
   }
+
 }
 return 0;
 }
