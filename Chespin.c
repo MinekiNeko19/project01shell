@@ -122,7 +122,7 @@ Redirect to files if the commands contains instructions regarding redirection
 
 int * redirect(char ** args){
   char ** temp = args;
-int * out = malloc(2*sizeof(int));
+  int * out = malloc(2*sizeof(int));
   while(*temp && temp){
 
     if (strcmp(*temp,">") == 0){
@@ -173,7 +173,7 @@ int run(){
 // gets the command from stdin
 char line [100];
 char current_dir[100];
-getcwd(&current_dir,100);
+getcwd(current_dir,100);
 int w,status;
 
 // prompting
@@ -224,14 +224,15 @@ else {
         w = wait(&status);
         // printf("child %d finished; parent %d resumes\n",child1,getpid());
         if(red[0] != -1){
-        dup2(red[1], red[0]);
-
-      }
+          dup2(red[1], red[0]);
+          exit(0);
+        }
       }
       else {
         //execute commands
         if(red[0] != -2){
         execvp(comms[0], comms);
+        exit(0);
         }
       }
 
@@ -248,20 +249,21 @@ else {
     w = wait(&status);
     // printf("child %d finished; parent %d resumes\n",child1,getpid());
     if(red[0] != -1){
-    dup2(red[1], red[0]);
-
-  }
+      dup2(red[1], red[0]);
+      exit(0);
+    }
   }
   else {
     //execute commands
     if(red[0] != -2){
-    execvp(comms[0], comms);
+      execvp(comms[0], comms);
+      exit(0);
     }
 
   }
 }
 
-  //free(red);
+free(red);
 
 return 0;
 }
