@@ -1,4 +1,5 @@
 #include "Chespin.h"
+
 // WHY DOES ENTERING YES AS AN ARGUMENT BREAK THE SHELL WHAT??
 
 /***
@@ -8,6 +9,8 @@ parse commands based on " "
   return: an array of arguments ready for execvp
 
 ***/
+
+// has a bug about puting empty spaces after the command
 char ** parse_args( char * line ){
   // allocate memory for commands (6 might not be enough size)
   char ** args = calloc(6, sizeof(char*));
@@ -29,11 +32,12 @@ char ** parse_args( char * line ){
   return args;
 }
 
-
 /***
+
   Changes the current working directory
     param: parsed command ["cd", "path"]
     returns: errno
+
 ***/
 
 // it prints an error whenever I use it but it actually changes the directory so it's weird
@@ -66,17 +70,61 @@ char ** redirect_helper(int fd, int std, int * out, char ** temp){
   return temp;
 }
 
+int pip(char ** sep, char ** start){
+
+  char * cmd1 = malloc (100);
+  char * cmd2 = malloc (100);
+
+  while (start != sep){
+    strcat(cmd1, " ");
+    strcat(cmd1,start[0]);
+    start++;
+  }
+  cmd1++;
+  //printf("cmd1:%s\n", cmd1);
+
+  *sep = NULL;
+   sep++;
+
+  while (sep && *sep){
+    strcat(cmd2, " ");
+    strcat(cmd2, sep[0]);
+
+    sep++;
+  }
+  cmd2++;
+  //printf("cmd2:%s\n", cmd2);
+
+
+  FILE *pipefrom = popen(cmd1,"r");
+  FILE *pipeto = popen(cmd2,"w");
+  while (1) {
+    if (feof(pipefrom)) {break;}
+
+    fputc(fgetc(pipefrom),pipeto);
+    //reading file stream ... read pip from and pipeto to see whtat's going on
+    //printf("pipfrom\n", read())
+  }
+
+  pclose(pipefrom);
+  pclose(pipeto);
+
+  return 0;
+}
+
 /***
+
 Redirect to files if the commands contains instructions regarding redirection
   params: parsed commands
   return: file descriptor of the replaced, whether stdin or stdout is replaced [0 (stdin) or 1 (stdout), file descriptor of its location]
+
 ***/
 
 int * redirect(char ** args){
   char ** temp = args;
-
+int * out = malloc(2*sizeof(int));
   while(*temp && temp){
-      int * out = malloc(2*sizeof(int));
+
     if (strcmp(*temp,">") == 0){
       //printf("stdout\n");
       int stdout = dup(1);
@@ -98,20 +146,21 @@ int * redirect(char ** args){
       temp = redirect_helper(fd,0,out,temp);
       out[1] = stdin;
       return out;
+    }else if (strcmp(*temp, "|")==0){
+      pip(temp, args);
+      out[0] = -2;
+      out [1] = -2;
+      return out;
     }
 
 
     temp++;
   }
-  int * out = malloc(2*sizeof(int));
+
   out[0] = -1;
   out [1] = -1;
   return out;
 }
-/***
-reads and executes commands
-  return: errno if there is an error, otherwise 0.
-***/
 
 /***
 
@@ -129,54 +178,40 @@ getcwd(&current_dir,100);
 
 int w,status;
 
-printf("%s:✧ ", current_dir); // (๑•̀ㅂ•́)و✧
+printf("%s:$ ", current_dir); // (๑•̀ㅂ•́)و✧
 fgets(line, 100, stdin);
 
 //parse arguments
 char ** args = parse_args( line );
-char ** comms = malloc(sizeof(args));
-int args_ind = 0;
-int comms_ind = 0;
+int * red = redirect(args);
 
-while (args[args_ind]) {
-  // printf("%s", comms[comms_ind]);
-  
+if(strcmp(args[0], "exit")==0){
+  exit(0);
+}
 
-  if (strcmp(args[args_ind],";")) {
-    comms[comms_ind] = args[args_ind];
-    // printf("copying %s into comms\n",args[args_ind]);
-  }
-  args_ind++;
-  comms_ind++;
+else if(strcmp(args[0],"cd")==0){
+  int a = cd(args);
 
-  int * red = redirect(args);
+  //chdir(args[1]);
+}
 
-  if(strcmp(comms[0], "exit")==0){
-    exit(0);
-  }
+//initiate child process
+int child1 = fork();
 
-  else if(strcmp(comms[0],"cd")==0){
-    int a = cd(args);
-
-    //initiate child process
-    int child1 = fork();
-
-    if (child1) {
-      w = wait(&status);
-      // printf("child %d finished; parent %d resumes\n",child1,getpid());
-    }
-    else if (!child1){
-      // printf("pid child: %d\tparent: %d\n", getpid(),getppid());
-      //execute commands
-      // printf("%s\n",comms[0]);
-      execvp(comms[0], comms);
-      exit(0);
-    }
-    comms_ind = 0;
-    args_ind++;
-  }
-
-
+if (child1) {
+  w = wait(&status);
+  if(red[0] != -1){
+  dup2(red[1], red[0]);
+  //free(red);
+}
+  // printf("child %d finished; parent %d resumes\n",child1,getpid());
+}
+else if (!child1){
+  // printf("pid child: %d\tparent: %d\n", getpid(),getppid());
+  //execute commands
+if(red[0] != -2){
+  execvp(args[0], args);
+}
 }
 
  return 0;
