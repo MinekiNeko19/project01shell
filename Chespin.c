@@ -261,8 +261,8 @@ else {
     }
 
   }
+  free(comms);
 }
-
 free(red);
 
 return 0;
