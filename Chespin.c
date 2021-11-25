@@ -171,14 +171,13 @@ reads and executes commands
 int run(){
 
 // gets the command from stdin
-
 char line [100];
 char current_dir[100];
 getcwd(&current_dir,100);
-
 int w,status;
 
-printf("%s:$ ", current_dir); // (๑•̀ㅂ•́)و✧
+// prompting
+printf("%s:✧ ", current_dir); // (๑•̀ㅂ•́)و✧
 fgets(line, 100, stdin);
 
 //parse arguments
@@ -191,28 +190,78 @@ if(strcmp(args[0], "exit")==0){
 
 else if(strcmp(args[0],"cd")==0){
   int a = cd(args);
-
-  //chdir(args[1]);
 }
 
-//initiate child process
-int child1 = fork();
+else {
+  // copy current running args into comms
+  char ** comms = calloc(6,sizeof(char*));
+  int args_ind = 0;
+  int comms_ind = 0;
 
-if (child1) {
-  w = wait(&status);
-  if(red[0] != -1){
-  dup2(red[1], red[0]);
+  while(args[args_ind]) {
+  //     printf("args[%d]: %s\n",args_ind, args[args_ind]);
+  //     printf("comms[%d]: %s\n",args_ind, comms[comms_ind]);
+
+    // copy current command into comms
+    if (strcmp(args[args_ind],";")) {
+      comms[comms_ind]=args[args_ind];
+      // printf("comms[%d] stores %s\n", comms_ind,comms[comms_ind]);
+      comms_ind++;
+      args_ind++;
+    }
+    // execute comms
+    else {
+      // printf("%s\n",args[args_ind]);
+
+      // skips copying ;
+      args_ind++;
+      comms[comms_ind]=NULL;
+
+      //initiate child process
+      int child1 = fork();
+
+      if (child1) {
+        w = wait(&status);
+        // printf("child %d finished; parent %d resumes\n",child1,getpid());
+        if(red[0] != -1){
+        dup2(red[1], red[0]);
+
+      }
+      }
+      else {
+        //execute commands
+        if(red[0] != -2){
+        execvp(comms[0], comms);
+        }
+      }
+
+      // resets comms
+      comms_ind = 0;
+    }
+  }
+
+  // run the final commmand b/c its ignored in the first while loop
+  //initiate child process
+  int child1 = fork();
+
+  if (child1) {
+    w = wait(&status);
+    // printf("child %d finished; parent %d resumes\n",child1,getpid());
+    if(red[0] != -1){
+    dup2(red[1], red[0]);
+
+  }
+  }
+  else {
+    //execute commands
+    if(red[0] != -2){
+    execvp(comms[0], comms);
+    }
+
+  }
+}
+
   //free(red);
-}
-  // printf("child %d finished; parent %d resumes\n",child1,getpid());
-}
-else if (!child1){
-  // printf("pid child: %d\tparent: %d\n", getpid(),getppid());
-  //execute commands
-if(red[0] != -2){
-  execvp(args[0], args);
-}
-}
 
- return 0;
+return 0;
 }
