@@ -8,12 +8,12 @@ Group Members: Sarah Leong, Yuqing Wu
 - piping using |
 - redirection using >,<,>>,<<
 
-**Eek! Bugs!!**
+**Eek! Bugs!!**\n
 [ ] Cd may print an error even after properly moving directories
 [ ] putting extra spaces at the end of a line will break the shell
 [ ] can't do redirection <,>,<<,>> in the same line
 
-**WIP**
+**WIP**\n
 [ ] signal handling
 _Optional_
 [ ] piping multiple times in one line
