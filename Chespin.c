@@ -122,62 +122,62 @@ reads and executes commands
 int run(){
 
 // gets the command from stdin
-
 char line [100];
 char current_dir[100];
 getcwd(&current_dir,100);
-
 int w,status;
 
+// prompting
 printf("%s:✧ ", current_dir); // (๑•̀ㅂ•́)و✧
 fgets(line, 100, stdin);
 
 //parse arguments
 char ** args = parse_args( line );
-char ** comms = malloc(sizeof(args));
-int args_ind = 0;
-int comms_ind = 0;
+int * red = redirect(args);
 
-while (args[args_ind]) {
-  // printf("%s", comms[comms_ind]);
-  
-
-  if (strcmp(args[args_ind],";")) {
-    comms[comms_ind] = args[args_ind];
-    // printf("copying %s into comms\n",args[args_ind]);
-  }
-  args_ind++;
-  comms_ind++;
-
-  int * red = redirect(args);
-
-  if(strcmp(comms[0], "exit")==0){
-    exit(0);
-  }
-
-  else if(strcmp(comms[0],"cd")==0){
-    int a = cd(args);
-
-    //initiate child process
-    int child1 = fork();
-
-    if (child1) {
-      w = wait(&status);
-      // printf("child %d finished; parent %d resumes\n",child1,getpid());
-    }
-    else if (!child1){
-      // printf("pid child: %d\tparent: %d\n", getpid(),getppid());
-      //execute commands
-      // printf("%s\n",comms[0]);
-      execvp(comms[0], comms);
-      exit(0);
-    }
-    comms_ind = 0;
-    args_ind++;
-  }
-
-
+if(strcmp(args[0], "exit")==0){
+  exit(0);
 }
 
- return 0;
+else if(strcmp(args[0],"cd")==0){
+  int a = cd(args);
+} 
+
+else {
+  // copy current running args into comms  
+  char ** comms = calloc(6,sizeof(char*));
+  int args_ind = 0;
+  int comms_ind = 0;
+
+  while(args[args_ind]) {
+    // strcpy(comms,args);
+    // printf("comms[%d]: %s\n", comms_ind,comms[comms_ind]);
+    // comms++;
+    // comms_ind++;
+    printf("args[%d]: %s\n", args_ind,args[args_ind]);
+    args_ind++;
+  }
+  while(comms[comms_ind]==NULL) {
+    printf("comms[%d] exists\n", comms_ind);
+    comms[comms_ind]=args[comms_ind];
+    printf("stores %s\n",comms[comms_ind]);
+    comms_ind++;
+  }
+
+  //initiate child process
+  int child1 = fork();
+
+  if (child1) {
+    w = wait(&status);
+    // printf("child %d finished; parent %d resumes\n",child1,getpid());
+  }
+  else if (!child1){
+    // printf("pid child: %d\tparent: %d\n", getpid(),getppid());
+    //execute commands
+    // printf("%s\n",comms[0]);
+    execvp(args[0], args);
+    exit(0);
+  }
+}
+return 0;
 }
