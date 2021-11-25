@@ -148,20 +148,13 @@ else {
   char ** comms = calloc(6,sizeof(char*));
   int args_ind = 0;
   int comms_ind = 0;
-
+  
   while(args[args_ind]) {
-    // strcpy(comms,args);
-    // printf("comms[%d]: %s\n", comms_ind,comms[comms_ind]);
-    // comms++;
-    // comms_ind++;
-    printf("args[%d]: %s\n", args_ind,args[args_ind]);
-    args_ind++;
-  }
-  while(comms[comms_ind]==NULL) {
     printf("comms[%d] exists\n", comms_ind);
-    comms[comms_ind]=args[comms_ind];
+    comms[comms_ind]=args[args_ind];
     printf("stores %s\n",comms[comms_ind]);
     comms_ind++;
+    args_ind++;
   }
 
   //initiate child process
@@ -175,7 +168,7 @@ else {
     // printf("pid child: %d\tparent: %d\n", getpid(),getppid());
     //execute commands
     // printf("%s\n",comms[0]);
-    execvp(args[0], args);
+    execvp(comms[0], comms);
     exit(0);
   }
 }
