@@ -1,7 +1,11 @@
 #include "Chespin.h"
 
 // WHY DOES ENTERING YES AS AN ARGUMENT BREAK THE SHELL WHAT??
-
+void print_err(){
+  if(errno){
+    printf("%s\n",strerror(errno));
+  }
+}
 /***
 parse commands based on " "
 
@@ -22,13 +26,19 @@ char ** parse_args( char * line ){
   char* token;
   int i = 0;
   while(token = strsep(&line," ")){
+    if(i<6){
   args[i] = token;
    i++;
+ }else{
+   printf("Too many arguments\n");
+   return NULL;
+ }
   }
+
 
   // make sure last element is null.
   args[i]= NULL;
-
+  print_err();
   return args;
 }
 
@@ -42,21 +52,33 @@ char ** parse_args( char * line ){
 
 // it prints an error whenever I use it but it actually changes the directory so it's weird
 int cd(char ** args){
+  //gets home directory of the user
+char * path = getenv("HOME");
 
+// if user does not give arguments, default to home directory
+if(args[1]==NULL){
+  //printf("path:%s\n", path);
+  chdir(path);
+}else{
 // if the user entered an absolute path from the home directory
   if(args[1][0] == '~'){
-    //gets home directory of the user
-    char * path = getenv("HOME");
+
     //concate home path with user's entered path
     strcat(path, ++args[1]);
-    printf("path: %s\n", path);
+    //printf("path: %s\n", path);
     chdir(path);
-  }else{
-    chdir(args[1]);
+
+    print_err();
   }
 
+    chdir(args[1]);
+    print_err();
+
+
+}
   return errno;
 }
+
 
 
 char ** redirect_helper(int fd, int std, int * out, char ** temp){
