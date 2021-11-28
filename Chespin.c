@@ -207,9 +207,9 @@ int exec(int red[2], char ** comms){
 
     if(red[0] != -1){
       dup2(red[1], red[0]);
-    
-
+      //exit(0); // if we put it here redirection don't work but if not exit don't function properly
     }
+
   }
   else {
     //execute commands
@@ -218,6 +218,7 @@ int exec(int red[2], char ** comms){
     }
 
   }
+
 }
 /***
 
@@ -239,7 +240,11 @@ fgets(line, 100, stdin);
 
 //parse arguments
 char ** args = parse_args( line );
+if(args == NULL){
+  return 0;
+}
 int * red = redirect(args);
+
 
 if(strcmp(args[0], "exit")==0){
   exit(0);
