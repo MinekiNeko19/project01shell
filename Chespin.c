@@ -26,7 +26,7 @@ char ** parse_args( char * line ){
   char* token;
   int i = 0;
   while(token = strsep(&line," ")){
-    if(i<6){
+    if(i<5){
   args[i] = token;
    i++;
  }else{
