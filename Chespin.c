@@ -184,6 +184,34 @@ int * out = malloc(2*sizeof(int));
   return out;
 }
 
+int exec(int red[2], char ** comms){
+  // run the final commmand b/c its ignored in the first while loop
+  //initiate child process
+  int w,status;
+  int child1 = fork();
+
+  if (child1) {
+
+      w = wait(&status);
+    // printf("child %d finished; parent %d resumes\n",child1,getpid());
+     if(WEXITSTATUS(status)){
+       printf("Command not found: %s\n",comms[0]);
+     }
+     print_err();
+    if(red[0] != -1){
+      dup2(red[1], red[0]);
+      print_err();
+
+    }
+  }
+  else {
+    //execute commands
+    if(red[0] != -2){
+      exit(execvp(comms[0], comms));
+    }
+
+  }
+}
 /***
 
 reads and executes commands
@@ -239,50 +267,14 @@ else {
       args_ind++;
       comms[comms_ind]=NULL;
 
-      //initiate child process
-      int child1 = fork();
-
-      if (child1) {
-        w = wait(&status);
-        // printf("child %d finished; parent %d resumes\n",child1,getpid());
-        if(red[0] != -1){
-        dup2(red[1], red[0]);
-
-      }
-      }
-      else {
-        //execute commands
-        if(red[0] != -2){
-        execvp(comms[0], comms);
-        }
-      }
-
+    exec(red,comms);
       // resets comms
       comms_ind = 0;
     }
   }
 
-  // run the final commmand b/c its ignored in the first while loop
-  //initiate child process
-  int child1 = fork();
-
-  if (child1) {
-    w = wait(&status);
-    // printf("child %d finished; parent %d resumes\n",child1,getpid());
-    if(red[0] != -1){
-    dup2(red[1], red[0]);
-
-  }
-  }
-  else {
-    //execute commands
-    if(red[0] != -2){
-    execvp(comms[0], comms);
-    }
-
-  }
+  exec(red,comms);
 }
-
   //free(red);
 
 return 0;
