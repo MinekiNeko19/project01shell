@@ -165,6 +165,13 @@ int * out = malloc(2*sizeof(int));
       //printf("stdin\n");
       int stdin = dup(0);
       int fd = open(temp[1],O_RDONLY);
+
+      print_err();
+      if(errno){
+          out[0] = -2;
+          out [1] = -2;
+          return out;
+      }
       temp = redirect_helper(fd,0,out,temp);
       out[1] = stdin;
       return out;
@@ -197,10 +204,10 @@ int exec(int red[2], char ** comms){
      if(WEXITSTATUS(status)){
        printf("Command not found: %s\n",comms[0]);
      }
-     print_err();
+
     if(red[0] != -1){
       dup2(red[1], red[0]);
-      print_err();
+    
 
     }
   }
