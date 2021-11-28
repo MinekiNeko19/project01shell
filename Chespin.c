@@ -70,11 +70,11 @@ if(args[1]==NULL){
 
     print_err();
   }
-
+else{
     chdir(args[1]);
     print_err();
 
-
+}
 }
   return errno;
 }
@@ -207,7 +207,7 @@ int exec(int red[2], char ** comms){
 
     if(red[0] != -1){
       dup2(red[1], red[0]);
-      //exit(0); // if we put it here redirection don't work but if not exit don't function properly
+      //exit(0); // if we put it here redirection don't work but if not exit don't function properly, or maybe exit does funciton idrk lol
     }
 
   }
