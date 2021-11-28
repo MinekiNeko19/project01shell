@@ -1,11 +1,12 @@
 #include "Chespin.h"
 
-// WHY DOES ENTERING YES AS AN ARGUMENT BREAK THE SHELL WHAT??
 void print_err(){
   if(errno){
     printf("%s\n",strerror(errno));
   }
+  errno = 0;
 }
+
 /***
 parse commands based on " "
 
@@ -15,6 +16,7 @@ parse commands based on " "
 ***/
 
 // has a bug about puting empty spaces after the command
+
 char ** parse_args( char * line ){
   // allocate memory for commands (6 might not be enough size)
   char ** args = calloc(6, sizeof(char*));
@@ -35,7 +37,6 @@ char ** parse_args( char * line ){
  }
   }
 
-
   // make sure last element is null.
   args[i]= NULL;
   print_err();
@@ -53,29 +54,30 @@ char ** parse_args( char * line ){
 // it prints an error whenever I use it but it actually changes the directory so it's weird
 int cd(char ** args){
   //gets home directory of the user
-char * path = getenv("HOME");
+  char * path = getenv("HOME");
 
-// if user does not give arguments, default to home directory
-if(args[1]==NULL){
-  //printf("path:%s\n", path);
-  chdir(path);
-}else{
-// if the user entered an absolute path from the home directory
-  if(args[1][0] == '~'){
-
-    //concate home path with user's entered path
-    strcat(path, ++args[1]);
-    //printf("path: %s\n", path);
+  // if user does not give arguments, default to home directory
+  if(args[1]==NULL){
+    //printf("path:%s\n", path);
     chdir(path);
+  } 
+  
+  else {
+    // if the user entered an absolute path from the home directory
+    if(args[1][0] == '~'){
 
-    print_err();
+      //concate home path with user's entered path
+      strcat(path, ++args[1]);
+      //printf("path: %s\n", path);
+      chdir(path);
+
+      print_err();
+    }
+    else {
+        chdir(args[1]);
+        print_err();
+    }
   }
-else{
-    chdir(args[1]);
-    print_err();
-
-}
-}
   return errno;
 }
 
