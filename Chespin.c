@@ -286,8 +286,10 @@ else {
   }
 
   exec(red,comms);
+   free(comms);
 }
-  //free(red);
+  free(red);
+
 
 return 0;
 }
