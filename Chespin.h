@@ -30,4 +30,6 @@ int run();
 int cd(char ** args);
 
 int * redirect(char ** args);
+
+void print_err();
 #endif
