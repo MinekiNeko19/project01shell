@@ -14,6 +14,7 @@ Group Members: Sarah Leong, Yuqing Wu
 
 **WIP**
 - [ ] signal handling
+
 _Optional_
 - [ ] piping multiple times in one line
 - [ ] unrestricted ordering and locations of redirection
