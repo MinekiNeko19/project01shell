@@ -10,6 +10,7 @@ Group Members: Sarah Leong, Yuqing Wu
 
 **Eek! Bugs!!**
 - [X] putting extra spaces at the end of a line will break the shell
+- [ ] crashes when doing "||"
 
 **WIP**
 - [ ] signal handling
