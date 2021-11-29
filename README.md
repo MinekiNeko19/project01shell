@@ -18,3 +18,4 @@ _Optional_
 - [ ] piping multiple times in one line
 - [ ] unrestricted ordering and locations of redirection
 - [X] colored shell prompting
+- [ ] unlimited # inputted args
