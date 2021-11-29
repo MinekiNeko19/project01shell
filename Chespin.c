@@ -259,7 +259,7 @@ getcwd(current_dir,100);
 int w,status;
 
 // prompting
-printf("%s%s:✧ ", "\x1B[35m",current_dir); // (๑•̀ㅂ•́)و✧ // magenta color
+printf("%s%s:✧ %s", "\x1B[35m",current_dir,"\x1B[37m"); // (๑•̀ㅂ•́)و✧ // magenta color then white
 fgets(line, 100, stdin);
 
 //parse arguments
