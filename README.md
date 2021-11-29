@@ -7,6 +7,7 @@ Group Members: Sarah Leong, Yuqing Wu
 - exit
 - piping using |
 - redirection using >,<,>>,<<
+- ; Usage: [command 1] ; [command 2]
 
 **Eek! Bugs!!**
 - [X] putting extra spaces at the end of a line will break the shell
