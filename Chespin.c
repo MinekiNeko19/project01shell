@@ -18,6 +18,28 @@ parse commands based on " "
 // has a bug about puting empty spaces after the command
 
 char ** parse_args( char * line ){
+  // deals with extra spaces
+  char * temp = malloc(sizeof(line));
+  int j = 0;
+  int t = 0;
+  while (line[j]) {
+    if (!(t==0 && line[j]==' ')) {
+      if (line[j] == ' ' && line[j+1] != ' ' && line[j+1] != '\n') { // spaces
+        temp[t] = line[j];
+        t++;
+        // printf("copying space\tline[%d]: %c\tline[%d]: %c\n",j,line[j],j+1,line[j+1]);
+      }
+      else if (line[j] != ' ') { // non spaces
+        temp[t] = line[j];
+        t++;
+      }
+    }
+    j++;
+  }
+  // printf("temp: %s\n", temp);
+  // printf("Line: %s\n", line);
+  line = temp;
+
   // allocate memory for commands (10 args taken)
   char ** args = calloc(10, sizeof(char*));
 
