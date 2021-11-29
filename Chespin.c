@@ -18,8 +18,8 @@ parse commands based on " "
 // has a bug about puting empty spaces after the command
 
 char ** parse_args( char * line ){
-  // allocate memory for commands (6 might not be enough size)
-  char ** args = calloc(6, sizeof(char*));
+  // allocate memory for commands (10 args taken)
+  char ** args = calloc(10, sizeof(char*));
 
   // get rid of \n in fgets
   line = strsep(&line, "\n");
@@ -28,17 +28,19 @@ char ** parse_args( char * line ){
   char* token;
   int i = 0;
   while(token = strsep(&line," ")){
-    if(i<5){
-  args[i] = token;
-   i++;
- }else{
-   printf("Too many arguments\n");
-   return NULL;
- }
+    if(i<10){
+      args[i] = token;
+      i++;
+    }
+    else {
+      printf("Too many arguments. Max: 10 arguments.\n");
+      return NULL;
+    }
   }
 
   // make sure last element is null.
   args[i]= NULL;
+  
   print_err();
   return args;
 }
@@ -183,13 +185,11 @@ int * redirect(char ** args){
       out [1] = -2;
       return out;
     }
-
-
     temp++;
   }
 
   out[0] = -1;
-  out [1] = -1;
+  out[1] = -1;
   return out;
 }
 
@@ -225,7 +225,7 @@ int exec(int red[2], char ** comms){
 /***
 
 reads and executes commands
-  return: errno if there is an error, otherwise 0.
+return: errno if there is an error, otherwise 0.
 
 ***/
 int run(){
@@ -281,14 +281,15 @@ else {
       args_ind++;
       comms[comms_ind]=NULL;
 
-    exec(red,comms);
+      exec(red,comms);
       // resets comms
       comms_ind = 0;
     }
   }
 
+  comms[comms_ind]=NULL;
   exec(red,comms);
-   free(comms);
+  free(comms);
 }
   free(red);
 
