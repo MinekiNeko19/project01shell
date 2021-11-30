@@ -11,16 +11,12 @@ Group Members: Sarah Leong, Yuqing Wu
 - `;` Usage: `[command 1] ; [command 2]`. Put spaces between the commands and the `;`.
 
 **Eek! Bugs!!**
-- [ ] crashes when doing `| |`, or some other bad use of piping
-- [ ] crashes for things like `> > > > `
-- [ ] error messages can get kind of weird at times
+- crashes when doing `| |`, or some other bad use of piping
+- crashes for things like `> > > > `
+- error messages can get kind of weird at times
 
 
-**WIP**
-- [ ] signal handling
-
-_Optional_
-- [ ] piping multiple times in one line
-- [ ] unrestricted ordering and locations of redirection
-- [X] colored shell prompting
-- [ ] unlimited # inputted args
+**Optional and Unimplemented**
+- piping multiple times in one line
+- unrestricted ordering and locations of redirection
+- unlimited # inputted args
