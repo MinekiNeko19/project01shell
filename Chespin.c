@@ -40,6 +40,9 @@ char ** parse_args( char * line ){
   }
   // printf("temp: %s\n", temp);
   // printf("Line: %s\n", line);
+  if (temp[t-1] == ';') { // semicolon at the end will be ignored
+    temp[t-1] = '\n';
+  }
   line = temp;
 
   // allocate memory for commands (10 args taken)
