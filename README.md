@@ -40,6 +40,7 @@ _Fixed Bugs_
 - `;` at the end of the line breaks the shell
 - Working directory moves but shell also prints error
 - Error messages print although no error occurred
+- Defunct forked processes
 
 # Function Headers
 - `char ** parse_args( char * line );`
