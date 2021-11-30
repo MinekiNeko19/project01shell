@@ -6,13 +6,13 @@ Group Members: Sarah Leong, Yuqing Wu
 - cd
   - cd with ~ and cd with no arguments default to home.
 - exit
-- piping using |, ex. [command1] | [command2]
-- redirection using >,<,>>, no chaining. ex: [command1] > [command2]
-- ; Usage: [command 1] ; [command 2]. Put spaces between the commands and the ;.
+- piping using `|`, ex. `[command1] | [command2]`
+- redirection using `>`,`<`,`>>`,`<<` no chaining. ex: [command1] > [command2]
+- `;` Usage: `[command 1] ; [command 2]`. Put spaces between the commands and the `;`.
 
 **Eek! Bugs!!**
-- [ ] crashes when doing "| |", or some other bad use of piping
-- [ ] crashes for things like " > > > > "
+- [ ] crashes when doing `| |`, or some other bad use of piping
+- [ ] crashes for things like `> > > > `
 - [ ] error messages can get kind of weird at times
 
 
