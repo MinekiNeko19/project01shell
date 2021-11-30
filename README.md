@@ -2,21 +2,37 @@
 Group Members: Sarah Leong, Yuqing Wu
 
 **Our shell implements:**
-- commands stored in /bin
-- cd
-  - cd with `~` 
-  - cd with no arguments moves working directory to home directory
-- exit
-- piping using `|`, ex. `[command1] | [command2]`
-- redirection using `>`,`<`,`>>`,`<<` no chaining. ex: `[command1] > [command2]`
-- `;` ex: `[command 1] ; [command 2]`. Put spaces between the commands and the `;`.
+* Please note that our shell only accepts 10 arguments in one line. Anything surrounded by spaces (except for the first character and the newline character) is considered an argument.
+- commands stored in `/bin`
+- `cd`
+  - Usage: `cd [directory path]`
+  - Example: `cd /documents`
+  - `cd ~` refers to user account's home directory 
+  - `cd` (with no follow up arguments) moves working directory to home directory
+- `exit`
+- simple piping using `|`
+  - Usage: `[command1] | [command2]`
+  - Example: `ls | wc`
+- simple redirection using `>`,`<`,`>>`,`<<`
+  - Does not implement chained redirection (Do not redirect multiple times in one line) 
+  - Usage: `[command1] > [command2]`
+  - Example: `cat > meow.txt`
+- run a series of commands in one line using `;`
+  - Usage: `[command 1] ; [command 2]`
+  - Example: `ls -l ; echo hello`
 
 **Eek! Bugs!!**
-- crashes when doing `| |`, or some other bad use of piping
-- crashes for things like `> > > > `
+- crashes when doing `| |`, or some other improper use of piping
+- crashes for silly syntax like `> > > >`
 - error messages can get kind of weird at times
 - sometimes there is random weird behavior that fixes itself
-  - ex.: echo caused `malloc(): corrupted top size` errors but it fixed itself after more runs
+  - Example: echo caused `malloc(): corrupted top size` errors but it fixed itself after more runs
+
+_Fixed Bugs_
+- Extra spaces breaks the shell
+- `;` at the end of the line breaks the shell
+- Working directory moves but shell also prints error
+- Error messages print although no error occurred
 
 **Function Headers**
 - `char ** parse_args( char * line );`
@@ -25,7 +41,7 @@ Group Members: Sarah Leong, Yuqing Wu
 - `int * redirect(char ** args);`
 - `void print_err();`
 
-Helper Functions 
+Helpers 
 - `char ** redirect_helper(int fd, int std, int * out, char ** temp)`
 - `int pip(char ** sep, char ** start)`
 - `int exec(int red[2], char ** comms)`
