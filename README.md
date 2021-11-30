@@ -21,9 +21,9 @@ Group Members: Sarah Leong, Yuqing Wu
 **Function Headers**
 - `char ** parse_args( char * line );`
 - `int run();`
-- `int cd(char ** args);
-- `int * redirect(char ** args);
-- `void print_err();
+- `int cd(char ** args);`
+- `int * redirect(char ** args);`
+- `void print_err();`
 
 **Unimplemented/Unsuccessful**
 - piping multiple times in one line
