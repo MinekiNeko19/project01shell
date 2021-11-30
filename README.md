@@ -2,7 +2,7 @@
 Group Members: Sarah Leong, Yuqing Wu
 
 # Our shell implements:
-* Please note that our shell only accepts 10 arguments in one line. Anything surrounded by spaces (except for the first character and the newline character) is considered an argument.
+Please note that our shell only accepts 10 arguments in one line. Anything surrounded by spaces (except for the first character and the newline character) is considered an argument.
 - commands stored in `/bin`
 - `cd`
   - Usage: `cd [directory path]`
