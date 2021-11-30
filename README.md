@@ -1,7 +1,7 @@
 # Shellos Shell
 Group Members: Sarah Leong, Yuqing Wu
 
-**Our shell implements:**
+#**Our shell implements:**
 * Please note that our shell only accepts 10 arguments in one line. Anything surrounded by spaces (except for the first character and the newline character) is considered an argument.
 - commands stored in `/bin`
 - `cd`
@@ -21,7 +21,7 @@ Group Members: Sarah Leong, Yuqing Wu
   - Usage: `[command 1] ; [command 2]`
   - Example: `ls -l ; echo hello`
 
-**Eek! Bugs!!**
+#**Eek! Bugs!!**
 - crashes when doing `| |`, or some other improper use of piping
 - crashes for silly syntax like `> > > >`
 - error messages can get kind of weird at times
@@ -34,7 +34,7 @@ _Fixed Bugs_
 - Working directory moves but shell also prints error
 - Error messages print although no error occurred
 
-**Function Headers**
+#**Function Headers**
 - `char ** parse_args( char * line );`
 - `int run();`
 - `int cd(char ** args);`
@@ -46,7 +46,7 @@ Helpers
 - `int pip(char ** sep, char ** start)`
 - `int exec(int red[2], char ** comms)`
 
-**Unimplemented/Unsuccessful**
+#**Unimplemented/Unsuccessful**
 - piping multiple times in one line
 - unrestricted ordering and locations of redirection (chained redirection)
 - unlimited # inputted args
