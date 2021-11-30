@@ -1,5 +1,5 @@
 # WSL Shell
-Group Members: ``S``arah ``L``eong, Yuqing ``W``u
+Group Members: Yuqing **W**u, **S**arah **L**eong
 
 # Our shell implements:
 Please note that our shell only accepts 10 arguments in one line. Anything surrounded by spaces (along with the first character and the final newline character) is considered an argument.
