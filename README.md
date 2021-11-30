@@ -5,11 +5,13 @@ Group Members: Sarah Leong, Yuqing Wu
 Please note that our shell only accepts 10 arguments in one line. Anything surrounded by spaces (along with the first character and the final newline character) is considered an argument.
 - commands stored in `/bin`
 - `cd`
+  - Moves current working directory
   - Usage: `cd [directory path]`
   - Example: `cd /documents`
   - `cd ~` refers to user account's home directory 
   - `cd` (with no follow up arguments) moves working directory to home directory
 - `exit`
+  - Exits the shell 
 - simple piping using `|`
   - Usage: `[command1] | [command2]`
   - Example: `ls | wc`
@@ -20,7 +22,12 @@ Please note that our shell only accepts 10 arguments in one line. Anything surro
 - run a series of commands in one line using `;`
   - Usage: `[command 1] ; [command 2]`
   - Example: `ls -l ; echo hello`
-
+ 
+# Unimplemented/Unsuccessful
+- piping multiple times in one line
+- unrestricted ordering and locations of redirection (chained redirection)
+- unlimited # inputted args
+- 
 # Eek! Bugs!!
 - crashes when doing `| |`, or some other improper use of piping
 - crashes for silly syntax like `> > > >`
@@ -45,8 +52,3 @@ Helpers
 - `char ** redirect_helper(int fd, int std, int * out, char ** temp)`
 - `int pip(char ** sep, char ** start)`
 - `int exec(int red[2], char ** comms)`
-
-# Unimplemented/Unsuccessful
-- piping multiple times in one line
-- unrestricted ordering and locations of redirection (chained redirection)
-- unlimited # inputted args
