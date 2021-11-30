@@ -21,6 +21,27 @@ parse commands based on " "
 
 ***/
 char ** parse_args( char * line ){
+  // rmeoves extra spaces
+  char * temp = malloc(sizeof(line));
+  int j = 0;
+  int t = 0;
+  while (line[j]) {
+    if (!(t==0 && line[j]==' ')) {
+      if (line[j] == ' ' && line[j+1] != ' ' && line[j+1] != '\n') { // spaces
+        temp[t] = line[j];
+        t++;
+      }
+      else if (line[j] != ' ') { // non spaces
+        temp[t] = line[j];
+        t++;
+      }
+    }
+    j++;
+  }
+  // printf("temp: %s\n", temp);
+  // printf("Line: %s\n", line);
+  line = temp;
+
   // allocate memory for commands (10 args taken)
   char ** args = calloc(10, sizeof(char*));
 
@@ -287,7 +308,7 @@ char current_dir[100];
 getcwd(current_dir,100);
 
 // prompting
-printf("%s:✧ ", current_dir); // (๑•̀ㅂ•́)و✧
+printf("%s%s:✧ %s", "\x1B[35m",current_dir,"\x1B[37m"); // magenta color then white
 fgets(line, 100, stdin);
 
 //parse arguments
