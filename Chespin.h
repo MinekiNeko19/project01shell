@@ -32,4 +32,10 @@ int cd(char ** args);
 int * redirect(char ** args);
 
 void print_err();
+
+// helper functions
+char ** redirect_helper(int fd, int std, int * out, char ** temp);
+int pip(char ** sep, char ** start);
+int exec(int red[2], char ** comms);
+
 #endif
