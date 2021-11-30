@@ -4,14 +4,16 @@ Group Members: Sarah Leong, Yuqing Wu
 **Our shell implements:**
 - commands stored in /bin
 - cd
+  - cd with ~ and cd with no arguments default to home.
 - exit
-- piping using |
-- redirection using >,<,>>,<<
-- ; Usage: [command 1] ; [command 2]
+- piping using |, ex. [command1] | [command2]
+- redirection using >,<,>>, no chaining. ex: [command1] > [command2]
+- ; Usage: [command 1] ; [command 2]. Put spaces between the commands and the ;.
 
 **Eek! Bugs!!**
-- [X] putting extra spaces at the end of a line will break the shell
-- [ ] crashes when doing "||"
+- [ ] crashes when doing "| |", or some other bad use of piping
+- [ ] crashes for things like " > > > > "
+
 
 **WIP**
 - [ ] signal handling
