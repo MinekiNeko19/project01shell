@@ -13,6 +13,7 @@ Group Members: Sarah Leong, Yuqing Wu
 **Eek! Bugs!!**
 - [ ] crashes when doing "| |", or some other bad use of piping
 - [ ] crashes for things like " > > > > "
+- [ ] error messages can get kind of weird at times
 
 
 **WIP**
