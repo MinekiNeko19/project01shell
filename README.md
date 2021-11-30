@@ -19,11 +19,11 @@ Group Members: Sarah Leong, Yuqing Wu
   - ex.: echo caused `malloc(): corrupted top size` errors but it fixed itself after more runs
 
 **Function Headers**
-- char ** parse_args( char * line );
-- int run();
-- int cd(char ** args);
-- int * redirect(char ** args);
-- void print_err();
+- `char ** parse_args( char * line );`
+- `int run();`
+- `int cd(char ** args);
+- `int * redirect(char ** args);
+- `void print_err();
 
 **Unimplemented/Unsuccessful**
 - piping multiple times in one line
