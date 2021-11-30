@@ -47,8 +47,7 @@ char ** parse_args( char * line ){
   // make sure last element is null.
   args[i]= NULL;
 
-  //check for error
-  print_err();
+
   return args;
 }
 
@@ -223,7 +222,7 @@ int * redirect(char ** args){
     }else if (strcmp(*temp, "|")==0){
       // does piping
       pip(temp, args);
-      
+
       out[0] = -2;
       out [1] = -2;
       return out;
